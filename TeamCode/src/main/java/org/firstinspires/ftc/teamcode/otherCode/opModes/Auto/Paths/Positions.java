@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.Robot.opModes.Auto.Paths;
-
-import static com.pedropathing.api.Paths.*;
+package org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths;
 
 import com.pedropathing.api.Paths;
 import com.pedropathing.api.PoseFactory;
@@ -11,7 +9,7 @@ import com.pedropathing.paths.interpolator.Interpolator;
 public class Positions {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose rightStart = poseFactory.of(56, 7, 90);
+    private final Pose rightStart = poseFactory.of(56, 7, 180);
     private final Pose shootcornerIntakeStart = poseFactory.of(56, 7, 180);
     private final Pose shootcornerIntake = poseFactory.of(11, 7, 180);
     private final Pose cornerIntakeshoot1 = poseFactory.of(47, 118, 90);
