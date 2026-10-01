@@ -50,6 +50,10 @@ public class AutoDrive extends NextOpMode {
 //        completeRobot.getFollower().update(); // updates follower, giving us current robot pose
 
 
+        bot.shootToLight('l'); // Tells the bot to set light 'l' to the shooter
+        bot.turretToLight('r'); // sets light 'r' to the turret
+
+
     }
     @Override
     public void end(){ // When the stop button is pressed

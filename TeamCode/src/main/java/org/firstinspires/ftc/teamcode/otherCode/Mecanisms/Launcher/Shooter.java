@@ -13,9 +13,16 @@ import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.units.Units;
+import dev.nextftc.units.measuretypes.AngularVelocity;
 
 public class Shooter implements Mechanism {
     public Shooter(){
+        shooter.getVelocityConstants()
+                .withP(MiscVar.shootkP)
+                .withI(MiscVar.shootkI)
+                .withD(MiscVar.shootkD)
+                .withV(MiscVar.shootkV)
+                .withA(MiscVar.shootkA);
 
     }
     public final NextMotor shooter = new NextMotor(robotMap.shooterMotor);
@@ -23,6 +30,8 @@ public class Shooter implements Mechanism {
     //Make Shooter Functions below
     public static final double gateOpen = 1;
     public static final double gateClose = 0;
+    private AngularVelocity targetSpeed = Units.getRotationsPerMinute(0);
+
 
 
     public Command openGate(){
@@ -36,12 +45,19 @@ public class Shooter implements Mechanism {
 
 
     public Command shooterOff(){
+        targetSpeed = Units.getRotationsPerMinute(0);
         return Commands.instant(()->shooter.setVelocitySetpoint(Units.getRotationsPerMinute(0)));
     }
     public Command shooterOn(){
+        targetSpeed = MiscVar.shootSpeed;
         return Commands.instant(()->shooter.setVelocitySetpoint(MiscVar.shootSpeed));
     }
     public Command shooterFlowerSpeed(){
+        targetSpeed = MiscVar.flowerShootSpeed;
         return Commands.instant(()->shooter.setVelocitySetpoint(MiscVar.flowerShootSpeed));
+    }
+    public boolean shooterInRange(){
+        AngularVelocity speedCurrent = shooter.getEncoderVelocity();
+        return (Math.abs(speedCurrent.getMagnitude() - targetSpeed.getMagnitude()) <= MiscVar.shootThreshhold.getMagnitude());
     }
 }

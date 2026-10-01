@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 import org.firstinspires.ftc.teamcode.otherCode.robotMap;
 
 import dev.nextftc.hardware.actuators.NextMotor;
-import dev.nextftc.hardware.actuators.NextServo;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.units.Units;
 import dev.nextftc.units.measuretypes.Angle;
@@ -35,6 +34,7 @@ public class Turret implements Mechanism {
     public boolean SOTM;
     public boolean rotComp;
     private Angle turretAngle;
+    private double desiredAngle;
 
     public void setGoal(Pose goal){
         activeGoal = goal;
@@ -42,6 +42,7 @@ public class Turret implements Mechanism {
     public Command AIM(boolean Y){
         if(Y){
             turretAngle = Units.getDegrees(turretAngleToMotor(targetTurretAng));
+
 
         }else {
             turretAngle = Units.getDegrees(0);
@@ -75,12 +76,17 @@ public class Turret implements Mechanism {
         double goalFieldDeg = Math.toDegrees(Math.atan2(dy, dx));
         double headingDeg = Math.toDegrees(botPose.heading());
 
-        double desired = MathFunctions.normalizeAngle(goalFieldDeg - headingDeg + angOffset);
+        desiredAngle = MathFunctions.normalizeAngle(goalFieldDeg - headingDeg + angOffset);
 
-        targetTurretAng = MathFunctions.clamp(desired, TURRET_MIN_DEG, TURRET_MAX_DEG);
+        targetTurretAng = MathFunctions.clamp(desiredAngle, TURRET_MIN_DEG, TURRET_MAX_DEG);
     }
     private double turretAngleToMotor(double angle){
         return (angle*MiscVar.TURRET_RATIO); //
+    }
+    public boolean turretAimed(){
+        Angle currentAngle = turret.getEncoderPosition();
+        return Math.abs(currentAngle.getMagnitude()-desiredAngle)>=MiscVar.allowedAngle.getMagnitude();
+
     }
     private void update(){
         turret.setPositionSetpoint(turretAngle);

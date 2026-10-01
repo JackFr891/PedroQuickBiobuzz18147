@@ -1,16 +1,13 @@
 package org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.fullAutos;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
-import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static com.pedropathing.ivy.groups.Groups.parallel;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
-import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Commands.AutoCommands;
 
@@ -58,10 +55,10 @@ public class Auto2point5tip extends NextOpMode {
                 //deploy flower collector
                 commands.shootPath(paths.shoot1LeftFlower()),
                 commands.shootPath(paths.leftFlowerMiddleFlower()),
-                commands.runPath(paths.middleFlowerShoot2()),
+                commands.drivePath(paths.middleFlowerShoot2()),
                 bot.shoot(),
                 //turn off intake, fold up flower collector
-                commands.runPath(paths.toPark())
+                commands.drivePath(paths.toPark())
 
         );
     }

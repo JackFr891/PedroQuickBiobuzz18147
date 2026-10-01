@@ -1,23 +1,27 @@
 package org.firstinspires.ftc.teamcode.otherCode;
 
 import static com.pedropathing.ivy.commands.Commands.waitMs;
+import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import androidx.annotation.NonNull;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
+import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
+import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Lights;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
 
 import dev.nextftc.hardware.RobotController;
+import dev.nextftc.hardware.actuators.NextRGBIndicator;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
 import dev.nextftc.robot.drive.DriveCommands;
@@ -29,6 +33,7 @@ public class CompleteRobot implements NextRobot {
     public final Drivetrain drivetrain = new Drivetrain(); //implement other mecanisms the same way
     public static final Shooter shooter = new Shooter();
     public final Turret turret = new Turret(follower);
+    public final Lights lights = new Lights();
 
 
 
@@ -57,9 +62,25 @@ public class CompleteRobot implements NextRobot {
     public void init(){
 
     }
+    public Command shootToLight(char index){
+        if (shooter.shooterInRange()){
+            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
+        }else {
+            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
+        }
+    }
+    public Command turretToLight(char index){
+        if (turret.turretAimed()){
+            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
+        }else {
+            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
+        }
+    }
+
     public Command shoot(){
         return sequential(
                 //make sure intake is on
+                shooter.shooterOn(),
                 shooter.openGate(),
                 waitMs(750),
                 shooter.closeGate()
