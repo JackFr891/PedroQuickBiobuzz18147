@@ -30,7 +30,7 @@ public class AutoDrive extends NextOpMode {
     @Override
     public void start(){ //When code is started
         //Define Controls here
-        //completeRobot.init().schedule();  //Only use if we have a standard initialization function setup in CompleteRobot
+        bot.init(); // runs init command in the Complete robot class
 
         CommandGamepad gp1 = new CommandGamepad(gamepad1);
         CommandGamepad gp2 = new CommandGamepad(gamepad2);
@@ -39,6 +39,8 @@ public class AutoDrive extends NextOpMode {
 
         gp2.dpadUp().onTrue(bot.turret.AIMcomp(true));// Commands are tied to controllers like this
         gp2.dpadDown().onTrue(bot.turret.AIMcomp(false));
+        gp1.leftTrigger().isOver(0.3).toggleOnTrue(null); // make turn on intake once command is made
+        gp2.a().onTrue(null).onFalse(null); // make deploy flower descore mech when pressed, pull up when released
 
 
 

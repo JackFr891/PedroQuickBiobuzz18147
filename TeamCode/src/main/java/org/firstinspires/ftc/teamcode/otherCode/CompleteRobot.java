@@ -60,8 +60,13 @@ public class CompleteRobot implements NextRobot {
         follower.update();
     }
     public void init(){
-
+        lights.lightBrightness('b',75);
+        lights.setLight('b', NextRGBIndicator.Color.WHITE);
+        shooter.closeGate();
     }
+
+
+
     public Command shootToLight(char index){
         if (shooter.shooterInRange()){
             return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
