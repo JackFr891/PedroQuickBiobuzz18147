@@ -28,17 +28,15 @@ public class Shooter implements Mechanism {
     public final NextMotor shooter = new NextMotor(robotMap.shooterMotor);
     public final NextServo gate = new NextServo(robotMap.gateServo);
     //Make Shooter Functions below
-    public static final double gateOpen = 1;
-    public static final double gateClose = 0;
     private AngularVelocity targetSpeed = Units.getRotationsPerMinute(0);
 
 
 
     public Command openGate(){
-        return Commands.instant(()->gate.setPosition(gateOpen));
+        return Commands.instant(()->gate.setPosition(MiscVar.gateOpen));
     }
     public Command closeGate(){
-        return Commands.instant(()->gate.setPosition(gateClose));
+        return Commands.instant(()->gate.setPosition(MiscVar.gateClose));
     }
 
 
