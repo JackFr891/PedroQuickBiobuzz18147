@@ -22,7 +22,6 @@ public class Turret implements Mechanism {
 
     private Follower f;
     public final NextMotor turret = new NextMotor(robotMap.turretMotor);
-    public final NextServo gate = new NextServo(robotMap.gateServo);
 
     //saved Positions
     public Pose frontGoalRed = new Pose(58,55);
@@ -40,13 +39,14 @@ public class Turret implements Mechanism {
     public void setGoal(Pose goal){
         activeGoal = goal;
     }
-    public void AIM(boolean Y){
+    public Command AIM(boolean Y){
         if(Y){
             turretAngle = Units.getDegrees(turretAngleToMotor(targetTurretAng));
 
         }else {
             turretAngle = Units.getDegrees(0);
         }
+        return null;
     }
     public Command AIMcomp(Boolean sotm){
         return instant(()-> SOTM = sotm);

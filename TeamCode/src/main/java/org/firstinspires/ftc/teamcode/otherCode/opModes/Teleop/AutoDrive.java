@@ -9,12 +9,12 @@ import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.triggers.CommandGamepad;
 
 
-@NextTeleop(name = "Red Teleop", group = "Auto Drive")
-public class RedAutoDrive extends NextOpMode {
+@NextTeleop(name = "Teleop", group = "Auto Drive")
+public class AutoDrive extends NextOpMode {
     private final CompleteRobot bot;
 
 
-    public RedAutoDrive(CompleteRobot robot) {
+    public AutoDrive(CompleteRobot robot) {
         super(robot);
         this.bot = robot;
 
@@ -30,7 +30,7 @@ public class RedAutoDrive extends NextOpMode {
     @Override
     public void start(){ //When code is started
         //Define Controls here
-        //completeRobot.init().schedule();  *Only use if we have a standard initialization function setup in CompleteRobot
+        //completeRobot.init().schedule();  //Only use if we have a standard initialization function setup in CompleteRobot
 
         CommandGamepad gp1 = new CommandGamepad(gamepad1);
         CommandGamepad gp2 = new CommandGamepad(gamepad2);
