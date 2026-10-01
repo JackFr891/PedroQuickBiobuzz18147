@@ -60,9 +60,15 @@ public class CompleteRobot implements NextRobot {
         follower.update();
     }
     public void init(){
-        lights.lightBrightness('b',75);
+        lights.lightBrightness('b',0.75); //sets both lights to 75%
         lights.setLight('b', NextRGBIndicator.Color.WHITE);
         shooter.closeGate();
+    }
+    public void shutDown(){
+        shooter.shooterOff();
+        shooter.closeGate();
+        lights.lightBrightness('b',0);
+        //intake off
     }
 
 

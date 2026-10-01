@@ -34,6 +34,10 @@ buildscript {
 
 android {
     namespace = 'org.firstinspires.ftc.teamcode'
+    compileSdk 35
+    defaultConfig {
+        minSdk 24
+    }
 
     packagingOptions {
         jniLibs.useLegacyPackaging true
@@ -53,6 +57,7 @@ dependencies {
     implementation 'dev.nextftc.v2:control:0.2.1'
     implementation 'dev.nextftc.v2:hardware:0.2.1'
     implementation 'dev.nextftc.v2:robot:0.2.1'
+    implementation "com.bylazar:fullpanels:1.0.5"
 }
 
 configurations.all {

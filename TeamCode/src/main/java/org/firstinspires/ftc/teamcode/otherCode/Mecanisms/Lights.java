@@ -34,7 +34,7 @@ public class Lights implements Mechanism {
         }
     }
 
-    public Command lightBrightness(char index, int b){
+    public Command lightBrightness(char index, double b){
         if (index == 'l'){ // Only sets left
             return Commands.instant(()->lLight.setBrightness(b));
         } else if (index == 'r') { // Only sets right

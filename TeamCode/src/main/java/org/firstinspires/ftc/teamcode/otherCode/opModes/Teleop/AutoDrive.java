@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.teamcode.otherCode.opModes.Teleop;
 
 import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
+import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
+import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
+import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextTeleop;
@@ -11,6 +15,7 @@ import dev.nextftc.robot.triggers.CommandGamepad;
 
 @NextTeleop(name = "Teleop", group = "Auto Drive")
 public class AutoDrive extends NextOpMode {
+    // should work 4 both, field is rotated not mirrored, origin is always garden corner
     private final CompleteRobot bot;
 
 
@@ -56,9 +61,19 @@ public class AutoDrive extends NextOpMode {
         bot.turretToLight('r'); // sets light 'r' to the turret
 
 
+        Pose pose = bot.getFollower().pose();
+        if (pose.y()>72){
+            bot.turret.setGoal(MiscVar.leftGoal);
+        }else {
+            bot.turret.setGoal(MiscVar.rightGoal);
+        }
+
+
     }
     @Override
     public void end(){ // When the stop button is pressed
+        bot.shutDown();
+
 
     }
 }

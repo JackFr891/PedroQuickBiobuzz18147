@@ -17,20 +17,19 @@ import dev.nextftc.units.measuretypes.Angle;
 public class Turret implements Mechanism {
     public Turret(Follower follower){
         this.f = follower;
+        turret.getPositionConstants()
+                .withP(MiscVar.turretkP)
+                .withI(MiscVar.turretkI)
+                .withD(MiscVar.turretkD)
+                .withS(MiscVar.turretkS);
     }
 
     private Follower f;
     public final NextMotor turret = new NextMotor(robotMap.turretMotor);
 
     //saved Positions
-    public Pose frontGoalRed = new Pose(58,55);
-    public Pose backGoalRed = new Pose(58,86);
-    public Pose frontGoalBlue = new Pose(84,55);
-    public Pose backGoalBlue = new Pose(84,86);
     public Pose activeGoal;
     public static double targetTurretAng;
-    public static double TURRET_MIN_DEG = -135;
-    public static double TURRET_MAX_DEG = 135;
     public boolean SOTM;
     public boolean rotComp;
     private Angle turretAngle;
@@ -78,7 +77,7 @@ public class Turret implements Mechanism {
 
         desiredAngle = MathFunctions.normalizeAngle(goalFieldDeg - headingDeg + angOffset);
 
-        targetTurretAng = MathFunctions.clamp(desiredAngle, TURRET_MIN_DEG, TURRET_MAX_DEG);
+        targetTurretAng = MathFunctions.clamp(desiredAngle, MiscVar.TURRET_MIN_DEG, MiscVar.TURRET_MAX_DEG);
     }
     private double turretAngleToMotor(double angle){
         return (angle*MiscVar.TURRET_RATIO); //
