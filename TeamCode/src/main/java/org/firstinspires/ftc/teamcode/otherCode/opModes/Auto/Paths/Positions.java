@@ -7,7 +7,10 @@ import com.pedropathing.paths.Path;
 import com.pedropathing.paths.interpolator.Interpolator;
 
 public class Positions {
+
     private static final PoseFactory poseFactory = PoseFactory.degrees();
+
+    public static final Pose gardenHoming = poseFactory.of(7,9,90); //Robot with the back in the corner facing along alliance wall
 
     public static final Pose rightStart = poseFactory.of(7, 24, 270);
     private final Pose shootToCornerIntakeStart = poseFactory.of(7, 24, 270);

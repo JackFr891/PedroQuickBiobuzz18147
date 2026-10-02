@@ -41,10 +41,19 @@ public class AutoDrive extends NextOpMode {
 
         bot.startDrive(gamepad1);
 
+        //gamepad 1
+        gp1.rightTrigger().isOver(0.3).or(gp2.rightTrigger().isOver(0.3))
+                .toggleOnTrue(null)   //make turn intake on
+                .toggleOnFalse(null); //make turn intake off
+
+
+        //gamepad 2
         gp2.dpadUp().onTrue(bot.turret.AIMcomp(true));// Commands are tied to controllers like this
         gp2.dpadDown().onTrue(bot.turret.AIMcomp(false));
-        gp1.leftTrigger().isOver(0.3).toggleOnTrue(null); // make turn on intake once command is made
-        gp2.a().onTrue(null).onFalse(null); // make deploy flower descore mech when pressed, pull up when released
+        gp2.rightBumper().onTrue(null).onFalse(null); // make deploy flower descore mech when pressed, pull up when released
+        gp2.y().onTrue(bot.shootFlower()); // when 'y' is pressed, shoot into the flower
+        gp2.a().onTrue(bot.shoot()); // When 'a' is pressed, shoot wherever the turret is currently aimed
+
 
 
 
@@ -68,6 +77,7 @@ public class AutoDrive extends NextOpMode {
             bot.turret.setGoal(MiscVar.rightGoal);
             bot.lights.setLight('r', NextRGBIndicator.Color.WHITE);
         }
+        bot.standardTelemetry();
 
 
     }
