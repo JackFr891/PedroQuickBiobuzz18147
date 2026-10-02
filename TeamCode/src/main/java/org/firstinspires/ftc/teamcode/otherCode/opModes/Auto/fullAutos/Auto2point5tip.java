@@ -50,16 +50,15 @@ public class Auto2point5tip extends NextOpMode {
 
     }
     public Command completeAuto(){
-        return sequential(
-                commands.shootPath(paths.preloadShootToFirstShoot()),
+        return sequential( //Sequential means it goes in order down the list
+                commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot
                 //deploy flower collector
-                commands.shootPath(paths.shoot1LeftFlower()),
+                commands.shootPath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
                 commands.shootPath(paths.leftFlowerMiddleFlower()),
                 commands.drivePath(paths.middleFlowerShoot2()),
                 bot.shoot(),
                 //turn off intake, fold up flower collector
                 commands.drivePath(paths.toPark())
-
         );
     }
 }

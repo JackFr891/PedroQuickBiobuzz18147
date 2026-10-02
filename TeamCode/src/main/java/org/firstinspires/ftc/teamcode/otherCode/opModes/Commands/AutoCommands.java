@@ -21,11 +21,14 @@ public class AutoCommands {
         this.f = follower;
         this.paths = paths;
     }
-    public CommandBuilder drivePath(Path path){
+    public CommandBuilder drivePath(Path path){ //Just follows the path
         return follow(f, path);
     }
-    public CommandBuilder shootPath(Path path){
-        return parallel(follow(f,path), robot.shoot());
+    public CommandBuilder shootPath(Path path){ //shoots at the start of the move
+        return parallel(follow(f,path), robot.shoot()); //Parallel means it tells the robot to do both at once
+    }
+    public CommandBuilder intakePath(Path path){ //Turns on the intake and drives
+        return parallel(follow(f,path),null); //replace null with the intake on function
     }
 
 }

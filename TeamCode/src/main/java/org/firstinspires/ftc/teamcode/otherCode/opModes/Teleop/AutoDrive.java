@@ -4,10 +4,9 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
-import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
-import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 
+import dev.nextftc.hardware.actuators.NextRGBIndicator;
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextTeleop;
 import dev.nextftc.robot.triggers.CommandGamepad;
@@ -57,15 +56,17 @@ public class AutoDrive extends NextOpMode {
 //        completeRobot.getFollower().update(); // updates follower, giving us current robot pose
 
 
-        bot.shootToLight('l'); // Tells the bot to set light 'l' to the shooter
-        bot.turretToLight('r'); // sets light 'r' to the turret
+        bot.fullShooterToLight('l'); //tells the robot to keep light 'l' updated
+
 
 
         Pose pose = bot.getFollower().pose();
         if (pose.y()>72){
             bot.turret.setGoal(MiscVar.leftGoal);
+            bot.lights.setLight('r', NextRGBIndicator.Color.VIOLET);
         }else {
             bot.turret.setGoal(MiscVar.rightGoal);
+            bot.lights.setLight('r', NextRGBIndicator.Color.WHITE);
         }
 
 

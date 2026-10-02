@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.otherCode;
 
 import static com.pedropathing.ivy.commands.Commands.waitMs;
-import static com.pedropathing.ivy.commands.Commands.waitUntil;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import androidx.annotation.NonNull;
@@ -10,7 +9,6 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.Gamepad;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
@@ -20,7 +18,6 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
 
-import dev.nextftc.hardware.RobotController;
 import dev.nextftc.hardware.actuators.NextRGBIndicator;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
@@ -67,30 +64,39 @@ public class CompleteRobot implements NextRobot {
     public void shutDown(){
         shooter.shooterOff();
         shooter.closeGate();
-        lights.lightBrightness('b',0);
+        lights.setLight('b', NextRGBIndicator.Color.OFF);
         //intake off
     }
 
 
 
-    public Command shootToLight(char index){
+    public Command flywheelToLight(char index){ //Green if flywheel is close to target, red if its not
         if (shooter.shooterInRange()){
             return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
         }else {
             return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
         }
     }
-    public Command turretToLight(char index){
+    public Command turretToLight(char index){ //Green if turret is close to target, red if not
         if (turret.turretAimed()){
             return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
         }else {
             return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
         }
     }
+    public Command fullShooterToLight(char index) { //green if ready to shoot, orange if its missing 1 thing, red if its not ready at all
+        if (turret.turretAimed() && shooter.shooterInRange()) { // both
+            return Commands.instant(() -> lights.setLight(index, NextRGBIndicator.Color.GREEN));
+        } else if (turret.turretAimed() || shooter.shooterInRange()) { // One but not the other
+            return Commands.instant(() -> lights.setLight(index, NextRGBIndicator.Color.ORANGE));
+        } else { //neither
+            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
+        }
+    }
 
-    public Command shoot(){
+    public Command shoot(){ // shoots at full speed
         return sequential(
-                //make sure intake is on
+                null, //Replace with intake turn on
                 shooter.shooterOn(),
                 shooter.openGate(),
                 waitMs(750),
@@ -98,12 +104,15 @@ public class CompleteRobot implements NextRobot {
 
         );
     }
-    public Command shootFlower(){
+    public Command shootFlower(){ // tries to shoot into flower
         return sequential(
           turret.AIM(false),
           shooter.shooterFlowerSpeed(),
           waitMs(500),
-          shoot(),
+          null, //Replace with intake on
+          shooter.openGate(),
+          waitMs(750),
+          shooter.closeGate(),
           turret.AIM(true),
           shooter.shooterOn()
         );
