@@ -16,11 +16,14 @@ public class MiscVar {
     public static Angle allowedAngle = Units.getDegrees(3);
     public static Pose rightGoal = new Pose(58,55); //from Driver's view
     public static Pose leftGoal = new Pose(58,86); // ^^^^^
+    public static Pose midFieldPose = new Pose(72,72);
     public static double TURRET_MIN_DEG = -135;
     public static double TURRET_MAX_DEG = 135;
     public static double constantSOTM = 0.5;
     public static double constantRotComp = 0.4;
-    public static double TURRET_RATIO = 9;
+    public static double TURRET_RATIO = 68*4/13; //68/13 is motor gearbox, 4/1 is the actual gears
+    public static double turretOffsetX = -3.5;
+    public static double turretOffsetY = 0;
     public static final double gateOpen = 1;
     public static final double gateClose = 0;
     public static double shootkP = 0.01;

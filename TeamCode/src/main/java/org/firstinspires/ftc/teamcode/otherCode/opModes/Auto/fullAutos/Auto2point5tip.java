@@ -6,10 +6,12 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.ivy.commands.Commands;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Commands.AutoCommands;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Commands.AutoCommands;
+import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
 import dev.nextftc.robot.opmode.NextOpMode;
@@ -41,20 +43,24 @@ public class Auto2point5tip extends NextOpMode {
     public void start(){
         bot.getFollower().setPose(Positions.rightStart);
         schedule(completeAuto()); //tells robot to run program underneath
+        bot.turret.setGoal(MiscVar.rightGoal);
     }
 
     @Override
     public void periodic(){
         bot.getFollower().update();
         Scheduler.execute(); // Code to make the Auto run properly
+        bot.turret.turretLoop();
 
     }
     public Command completeAuto(){
         return sequential( //Sequential means it goes in order down the list
                 commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot
+                Commands.instant(()->bot.turret.setGoal(MiscVar.leftGoal)),
                 //deploy flower collector
                 commands.shootPath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
                 commands.shootPath(paths.leftFlowerMiddleFlower()),
+                Commands.instant(()->bot.turret.setGoal(MiscVar.rightGoal)),
                 commands.drivePath(paths.middleFlowerShoot2()),
                 bot.shoot(),
                 //turn off intake, fold up flower collector

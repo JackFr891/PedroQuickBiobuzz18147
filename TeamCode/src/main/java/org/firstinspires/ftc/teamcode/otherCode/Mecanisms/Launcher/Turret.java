@@ -31,7 +31,6 @@ public class Turret implements Mechanism {
     public Pose activeGoal;
     public static double targetTurretAng;
     public boolean SOTM;
-    public boolean rotComp;
     private Angle turretAngle;
     private double desiredAngle;
 
@@ -52,25 +51,32 @@ public class Turret implements Mechanism {
         return instant(()-> SOTM = sotm);
     }
     public void turretLoop() {
-        double xOffset,yOffset,angOffset;
         Pose botPose = f.pose();
         Velocity wVel = f.velocity(); // gets the velocity in terms of field directions
-        if (SOTM){
-
-            double dDist = f.pose().distance(activeGoal); //Finds the distance to activeGoal
 
 
-            xOffset = wVel.vx*dDist*MiscVar.constantSOTM; //Finds how much to offset goal pose in x and y to cancel out velocity
-            yOffset = wVel.vy*dDist+MiscVar.constantSOTM;
-            angOffset = wVel.omega*MiscVar.constantRotComp; //Finds how much to change angle by to cancel out velocity
-        }else{
+        //gets the position of the turret
+        double turretX = botPose.x() + MiscVar.turretOffsetX * Math.cos(botPose.heading()) - MiscVar.turretOffsetY * Math.sin(botPose.heading());
+        double turretY = botPose.y() + MiscVar.turretOffsetX * Math.sin(botPose.heading()) + MiscVar.turretOffsetY * Math.cos(botPose.heading());
+
+
+        double xOffset, yOffset, angOffset;
+        if (SOTM) {
+            double dDist = Math.hypot(activeGoal.x() - turretX, activeGoal.y() - turretY); // Finds the distance from turret to activeGoal
+
+            xOffset = wVel.vx * dDist * MiscVar.constantSOTM; // Finds how much to offset goal pose in x and y to cancel out velocity
+            yOffset = wVel.vy * dDist * MiscVar.constantSOTM;
+            angOffset = wVel.omega * MiscVar.constantRotComp; // Finds how much to change angle by to cancel out velocity
+        } else {
             xOffset = 0;
             yOffset = 0;
             angOffset = 0;
         }
 
-        double dx = activeGoal.x() - botPose.x() + xOffset;
-        double dy = activeGoal.y() - botPose.y() + yOffset;
+
+        //distance from goal to turret plus SOTM correction in each axis
+        double dx = activeGoal.x() - (botPose.x()+ turretX) + xOffset;
+        double dy = activeGoal.y() - (botPose.y()+ turretY) + yOffset;
 
         double goalFieldDeg = Math.toDegrees(Math.atan2(dy, dx));
         double headingDeg = Math.toDegrees(botPose.heading());

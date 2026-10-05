@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.otherCode.opModes.Commands;
+package org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Commands;
 
 
 import static com.pedropathing.ivy.groups.Groups.parallel;

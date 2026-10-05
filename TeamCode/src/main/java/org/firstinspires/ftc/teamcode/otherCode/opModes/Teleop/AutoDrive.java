@@ -49,8 +49,12 @@ public class AutoDrive extends NextOpMode {
 
         //gamepad 2
         gp2.dpadUp().onTrue(bot.turret.AIMcomp(true));// Commands are tied to controllers like this
-        gp2.dpadDown().onTrue(bot.turret.AIMcomp(false));
+        gp2.dpadDown().onTrue(bot.turret.AIMcomp(false)); //turns Shoot on the Move on and off, in case its bugging
+
+
         gp2.rightBumper().onTrue(null).onFalse(null); // make deploy flower descore mech when pressed, pull up when released
+
+
         gp2.y().onTrue(bot.shootFlower()); // when 'y' is pressed, shoot into the flower
         gp2.a().onTrue(bot.shoot()); // When 'a' is pressed, shoot wherever the turret is currently aimed
 
@@ -68,14 +72,17 @@ public class AutoDrive extends NextOpMode {
         bot.fullShooterToLight('l'); //tells the robot to keep light 'l' updated
 
 
-
         Pose pose = bot.getFollower().pose();
-        if (pose.y()>72){
-            bot.turret.setGoal(MiscVar.leftGoal);
-            bot.lights.setLight('r', NextRGBIndicator.Color.VIOLET);
-        }else {
-            bot.turret.setGoal(MiscVar.rightGoal);
-            bot.lights.setLight('r', NextRGBIndicator.Color.WHITE);
+        if (pose.y()>96){
+            bot.turret.setGoal(MiscVar.leftGoal); //Aims at driver's left goal if the robot is within the back 2 tiles
+            bot.lights.setLight('r', NextRGBIndicator.Color.VIOLET); // The color can be changed, just picked random ones
+        } else if (pose.y()<48) {
+            bot.turret.setGoal(MiscVar.rightGoal); //Aims at driver's left goal if the robot is within the front 2 tiles
+            bot.lights.setLight('r', NextRGBIndicator.Color.WHITE); // The color can be changed, just picked random ones
+        }
+        {
+            bot.turret.setGoal(MiscVar.midFieldPose); //Aims at center of the field if in the center 2 tiles, makes the transition smoother between sides
+            bot.lights.setLight('r', NextRGBIndicator.Color.RED); // The color can be changed, just picked random ones
         }
         bot.standardTelemetry();
 
