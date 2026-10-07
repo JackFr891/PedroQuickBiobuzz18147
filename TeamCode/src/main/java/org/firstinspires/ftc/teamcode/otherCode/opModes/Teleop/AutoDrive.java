@@ -43,9 +43,12 @@ public class AutoDrive extends NextOpMode {
 
         //gamepad 1
         gp1.rightTrigger().isOver(0.3).or(gp2.rightTrigger().isOver(0.3))
-                .toggleOnTrue(null)   //make turn intake on
-                .toggleOnFalse(null); //make turn intake off
+                .toggleOnTrue(bot.intake.intake(true))   //make turn intake on
+                .toggleOnFalse(bot.intake.intake(false)); //make turn intake off
 
+        gp1.rightTrigger().isOver(.3)
+                .toggleOnTrue(bot.intake.outtake(true))   //make turn intake purge on
+                .toggleOnFalse(bot.intake.outtake(false)); //make turn intake purge off
 
         //gamepad 2
         gp2.dpadUp().onTrue(bot.turret.AIMcomp(true));// Commands are tied to controllers like this

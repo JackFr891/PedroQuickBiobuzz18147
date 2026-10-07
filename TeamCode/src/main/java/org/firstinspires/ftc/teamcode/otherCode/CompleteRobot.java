@@ -13,6 +13,7 @@ import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Drivetrain;
+import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Intake;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Lights;
@@ -35,6 +36,7 @@ public class CompleteRobot implements NextRobot {
     public static final Shooter shooter = new Shooter();
     public final Turret turret = new Turret(follower);
     public final Lights lights = new Lights();
+    public final Intake intake = new Intake();
 
 
 
@@ -137,6 +139,6 @@ public class CompleteRobot implements NextRobot {
     @NonNull
     @Override
     public Set<Mechanism> getMechanisms() {
-        return Set.of(drivetrain,shooter,turret,lights);  //add all mechanisms listed above here
+        return Set.of(drivetrain,shooter,turret,lights,intake);  //add all mechanisms listed above here
     }
 }

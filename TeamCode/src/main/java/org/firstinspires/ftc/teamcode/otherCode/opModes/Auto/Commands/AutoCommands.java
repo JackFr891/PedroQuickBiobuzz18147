@@ -28,7 +28,7 @@ public class AutoCommands {
         return parallel(follow(f,path), robot.shoot()); //Parallel means it tells the robot to do both at once
     }
     public CommandBuilder intakePath(Path path){ //Turns on the intake and drives
-        return parallel(follow(f,path),null); //replace null with the intake on function
+        return parallel(follow(f,path),robot.intake.intake(true));
     }
 
 }

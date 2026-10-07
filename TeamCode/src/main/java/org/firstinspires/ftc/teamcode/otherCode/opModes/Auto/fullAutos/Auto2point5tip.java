@@ -63,7 +63,7 @@ public class Auto2point5tip extends NextOpMode {
                 Commands.instant(()->bot.turret.setGoal(MiscVar.rightGoal)),
                 commands.drivePath(paths.middleFlowerShoot2()),
                 bot.shoot(),
-                //turn off intake, fold up flower collector
+                bot.intake.intake(false),//turn off intake, fold up flower collector
                 commands.drivePath(paths.toPark())
         );
     }

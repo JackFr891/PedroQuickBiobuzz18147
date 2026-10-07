@@ -35,5 +35,8 @@ public class MiscVar {
     public static double turretkI = 0;
     public static double turretkD = 0.005;
     public static double turretkS = 0.01;
+    public static AngularVelocity intakeSpeed = Units.getRotationsPerMinute(100);
+    public static AngularVelocity outtakeSpeed = Units.getRotationsPerMinute(-50);
+
 
 }
