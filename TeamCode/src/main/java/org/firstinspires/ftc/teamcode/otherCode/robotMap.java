@@ -3,10 +3,10 @@ package org.firstinspires.ftc.teamcode.otherCode;
 public class robotMap {
     //Control Hub
     //motors
-    public static String leftFrontMotor = "leftFront"; //0
-    public static String leftRearMotor = "leftRear"; //1
-    public static String intakeMotor = "intake"; //2
-    public static String shooterMotor = "shooter"; //3
+    public static String leftFrontMotor = "LF"; //0
+    public static String leftRearMotor = "LR"; //1
+    public static String intakeMotor = "Intake"; //2
+    public static String shooterMotor = "Shooter"; //3
     //servos
     public static String gateServo = "gate"; //0
     public static String leftLight = "leftLight"; //1
@@ -16,9 +16,9 @@ public class robotMap {
 
     //Expansion Hub
     //motors
-    public static String rightFrontMotor = "rightFront"; //0
-    public static String rightRearMotor = "rightRear"; //1
-    public static String turretMotor = "turret"; //2
+    public static String rightFrontMotor = "RF"; //0
+    public static String rightRearMotor = "RR"; //1
+    public static String turretMotor = "Turret"; //3
     //servos
 
     //sensors
