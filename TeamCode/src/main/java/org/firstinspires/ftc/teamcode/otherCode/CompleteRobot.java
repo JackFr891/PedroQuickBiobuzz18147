@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
+import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Drivetrain;
@@ -18,6 +19,7 @@ import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Lights;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
+import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
@@ -114,7 +116,7 @@ public class CompleteRobot implements NextRobot {
 
     public Command shoot(){ // shoots at full speed
         return sequential(
-                null, //Replace with intake turn on
+                intake.intake(true),
                 shooter.shooterOn(),
                 shooter.openGate(),
                 waitMs(750),
@@ -122,12 +124,26 @@ public class CompleteRobot implements NextRobot {
 
         );
     }
+    public void fullAiming(Pose pose){
+        if (pose.y()>96){
+            turret.setGoal(MiscVar.leftGoal); //Aims at driver's left goal if the robot is within the back 2 tiles
+            lights.setLight('r', NextRGBIndicator.Color.VIOLET); // The color can be changed, just picked random ones
+        } else if (pose.y()<48) {
+            turret.setGoal(MiscVar.rightGoal); //Aims at driver's left goal if the robot is within the front 2 tiles
+            lights.setLight('r', NextRGBIndicator.Color.WHITE); // The color can be changed, just picked random ones
+        }
+        {
+            turret.setGoal(MiscVar.midFieldPose); //Aims at center of the field if in the center 2 tiles, makes the transition smoother between sides
+            lights.setLight('r', NextRGBIndicator.Color.RED); // The color can be changed, just picked random ones
+        }
+        turret.turretLoop();
+    }
     public Command shootFlower(){ // tries to shoot into flower
         return sequential(
           turret.AIM(false),
           shooter.shooterFlowerSpeed(),
           waitMs(500),
-          null, //Replace with intake on
+          intake.intake(true),
           shooter.openGate(),
           waitMs(750),
           shooter.closeGate(),

@@ -20,6 +20,7 @@ public class robotMap {
     public static String rightRearMotor = "RR"; //1
     public static String turretMotor = "Turret"; //3
     //servos
+    public static String flowerMechServo = "flower"; //5
 
     //sensors
 

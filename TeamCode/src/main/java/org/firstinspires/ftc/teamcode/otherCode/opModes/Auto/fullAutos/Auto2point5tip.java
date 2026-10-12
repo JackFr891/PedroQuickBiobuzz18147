@@ -7,6 +7,7 @@ import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.ivy.commands.Commands;
+import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
@@ -42,28 +43,28 @@ public class Auto2point5tip extends NextOpMode {
     @Override
     public void start(){
         bot.getFollower().setPose(Positions.rightStart);
-        schedule(completeAuto()); //tells robot to run program underneath
         bot.turret.setGoal(MiscVar.rightGoal);
+        schedule(completeAuto()); //tells robot to run program underneath
     }
 
     @Override
     public void periodic(){
         bot.getFollower().update();
         Scheduler.execute(); // Code to make the Auto run properly
-        bot.turret.turretLoop();
+        Pose pose = bot.getFollower().pose();
+        bot.fullAiming(pose);
 
     }
     public Command completeAuto(){
         return sequential( //Sequential means it goes in order down the list
-                commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot
-                Commands.instant(()->bot.turret.setGoal(MiscVar.leftGoal)),
-                //deploy flower collector
+                commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot, goes all the way to being ready 4 2nd shoot
+                bot.intake.flowerArmDeploy(true),
                 commands.shootPath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
                 commands.shootPath(paths.leftFlowerMiddleFlower()),
-                Commands.instant(()->bot.turret.setGoal(MiscVar.rightGoal)),
                 commands.drivePath(paths.middleFlowerShoot2()),
                 bot.shoot(),
-                bot.intake.intake(false),//turn off intake, fold up flower collector
+                bot.intake.intake(false),
+                bot.intake.flowerArmDeploy(false),
                 commands.drivePath(paths.toPark())
         );
     }
