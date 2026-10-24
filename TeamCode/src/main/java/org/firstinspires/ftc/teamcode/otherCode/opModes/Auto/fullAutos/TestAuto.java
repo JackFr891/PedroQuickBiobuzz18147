@@ -7,6 +7,7 @@ import com.pedropathing.api.PoseFactory;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
@@ -45,7 +46,12 @@ public class TestAuto extends NextOpMode {
                 commands.drivePath(paths.testPathLinearGo()),
                 commands.drivePath(paths.testPathLinearBack()),
                 commands.drivePath(paths.testPathPiecewiseGo()),
-                commands.drivePath(paths.testPathPiecewiseBack())
+                commands.drivePath(paths.testPathPiecewiseBack()),
+                Commands.instant(() -> {
+                    if (follower != null) {
+                        follower.stop();
+                    }
+                })
         );
     }
 
@@ -67,6 +73,13 @@ public class TestAuto extends NextOpMode {
     public void periodic() {
         if (follower != null) {
             follower.update();
+        }
+    }
+
+    @Override
+    public void end() {
+        if (follower != null) {
+            follower.stop();
         }
     }
 }

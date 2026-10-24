@@ -11,15 +11,15 @@ public class MiscVar {
     //Holds all fixed values that we want to be able to change using panels outside of PedroPathing
 
     // Keep tunable RPM values primitive so Panels exposes them as editable numeric fields.
-    public static volatile double shootSpeedRPM = 175;
+    public static volatile double shootSpeedRPM = 160;
     public static volatile double flowerShootSpeedRPM = 60;
     public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(5);
     public static Angle allowedAngle = Units.getDegrees(3);
-    public static Pose rightGoal = new Pose(58,55); //from Driver's view
-    public static Pose leftGoal = new Pose(58,86); // ^^^^^
+    public static Pose rightGoal = new Pose(58,59); //from Driver's view
+    public static Pose leftGoal = new Pose(58,82); // ^^^^^
     public static Pose midFieldPose = new Pose(72,72);
-    public static double TURRET_MIN_DEG = -135;
-    public static double TURRET_MAX_DEG = 135;
+    public static double TURRET_MIN_DEG = -150;
+    public static double TURRET_MAX_DEG = 150;
     public static double constantSOTM = 0.5;
     public static double constantRotComp = 0.4;
     public static final double TURRET_ENCODER_TICKS_PER_MOTOR_REV = 28.0; // REV HD Hex encoder, at the motor

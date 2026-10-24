@@ -6,6 +6,7 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
+import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
@@ -58,6 +59,14 @@ public class Auto2point5tip extends NextOpMode {
         }
         Scheduler.execute(); // Code to make the Auto run properly
     }
+
+    @Override
+    public void end(){
+        if (follower != null) {
+            follower.stop();
+        }
+    }
+
     public Command completeAuto(){
         return sequential( //Sequential means it goes in order down the list
                 commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot, goes all the way to being ready 4 2nd shoot
@@ -68,7 +77,12 @@ public class Auto2point5tip extends NextOpMode {
                 bot.shoot(),
                 bot.intake.intake(false),
                 bot.intake.flowerArmDeploy(false),
-                commands.drivePath(paths.toPark())
+                commands.drivePath(paths.toPark()),
+                Commands.instant(() -> {
+                    if (follower != null) {
+                        follower.stop();
+                    }
+                })
         );
     }
 }
