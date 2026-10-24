@@ -20,7 +20,7 @@ import dev.nextftc.robot.opmode.NextOpMode;
 @NextAutonomous(name = "Test Auto", group = "Main Auto")
 public class TestAuto extends NextOpMode {
     private static final PoseFactory poseFactory = PoseFactory.degrees();
-    private static final Pose aimPoint = poseFactory.of(0, 48, 0);
+    private static final Pose aimPoint = poseFactory.of(0, -48, 0);
 
     private final CompleteRobot bot;
     private final Follower follower;
