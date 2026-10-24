@@ -8,20 +8,20 @@ import com.pedropathing.ivy.CommandBuilder;
 import com.pedropathing.paths.Path;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.FullAutoPositions;
 
 public class AutoCommands {
     private final Follower f;
-    private final Positions paths;
+    private final FullAutoPositions paths;
     private final CompleteRobot robot;
 
-    public AutoCommands(Follower follower, Positions paths, CompleteRobot robot){
+    public AutoCommands(Follower follower, FullAutoPositions paths, CompleteRobot robot){
         this.f = follower;
         this.paths = paths;
         this.robot = robot;
     }
 
-    public AutoCommands(Follower follower, Positions paths){
+    public AutoCommands(Follower follower, FullAutoPositions paths){
         this(follower, paths, null);
     }
 

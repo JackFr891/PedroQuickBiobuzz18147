@@ -11,7 +11,7 @@ import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Commands.AutoCommands;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.FullAutoPositions;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.TestPositions;
 
 import dev.nextftc.robot.opmode.NextAutonomous;
@@ -33,7 +33,7 @@ public class TestAuto extends NextOpMode {
         bot.turret.configureEncoder();
         this.paths = new TestPositions();
         // AutoCommands.drivePath only uses the follower; its Positions argument is unused.
-        this.commands = new AutoCommands(follower, new Positions(), bot);
+        this.commands = new AutoCommands(follower, new FullAutoPositions(), bot);
         Scheduler.reset();
     }   //Tells the code to look at the robot setup in CompleteRobot
 

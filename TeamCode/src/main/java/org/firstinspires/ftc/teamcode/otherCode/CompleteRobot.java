@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Intake;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Lights;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.FullAutoPositions;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
 
@@ -61,7 +61,7 @@ public class CompleteRobot implements NextRobot {
         return Commands.instant(()->{
             Follower f = getFollower();
             if (f != null) {
-                f.setPose(Positions.gardenHoming);
+                f.setPose(FullAutoPositions.gardenHoming);
             }
         });
     }
@@ -69,7 +69,7 @@ public class CompleteRobot implements NextRobot {
     public Follower getFollower(HardwareMap h) {
         if (follower == null && h != null) {
             follower = Constants.create(h);
-            follower.setPose(Positions.gardenHoming);
+            follower.setPose(FullAutoPositions.gardenHoming);
         }
         return follower;
     }

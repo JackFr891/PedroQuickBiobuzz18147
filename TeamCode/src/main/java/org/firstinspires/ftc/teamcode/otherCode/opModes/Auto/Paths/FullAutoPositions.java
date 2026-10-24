@@ -6,7 +6,7 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.interpolator.Interpolator;
 
-public class Positions {
+public class FullAutoPositions {
 
     private static final PoseFactory poseFactory = PoseFactory.degrees();
 

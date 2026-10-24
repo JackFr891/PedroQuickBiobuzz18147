@@ -9,7 +9,8 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.DownRedAutoPositions;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.FullAutoPositions;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Commands.AutoCommands;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 
@@ -20,7 +21,7 @@ import dev.nextftc.robot.opmode.NextOpMode;
 public class Auto2point5tip extends NextOpMode {
     private final CompleteRobot bot;
     private final Follower follower;
-    private final Positions paths;
+    private final FullAutoPositions paths;
     private final AutoCommands commands;
 
 
@@ -29,7 +30,7 @@ public class Auto2point5tip extends NextOpMode {
         this.bot = robot;
         follower = bot.getFollower(hardwareMap);
         bot.turret.configureEncoder();
-        this.paths = new Positions();
+        this.paths = new FullAutoPositions();
         this.commands = new AutoCommands(follower, paths, bot);
         Scheduler.reset();
     }   //Tells the code to look at the robot setup in CompleteRobot
@@ -41,7 +42,7 @@ public class Auto2point5tip extends NextOpMode {
     @Override
     public void start(){
         if (bot.getFollower() != null) {
-            bot.getFollower().setPose(Positions.rightStart);
+            bot.getFollower().setPose(DownRedAutoPositions.start);
         }
         bot.turret.setGoal(MiscVar.rightGoal);
         schedule(completeAuto()); //tells robot to run program underneath
@@ -60,6 +61,7 @@ public class Auto2point5tip extends NextOpMode {
     }
     public Command completeAuto(){
         return sequential( //Sequential means it goes in order down the list
+                bot.intake.flowerArmDeploy(false),
                 commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot, goes all the way to being ready 4 2nd shoot
                 bot.intake.flowerArmDeploy(true),
                 commands.shootPath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
