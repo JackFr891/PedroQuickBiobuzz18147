@@ -11,7 +11,7 @@ public class MiscVar {
     //Holds all fixed values that we want to be able to change using panels outside of PedroPathing
 
     // Keep tunable RPM values primitive so Panels exposes them as editable numeric fields.
-    public static volatile double shootSpeedRPM = 180;
+    public static volatile double shootSpeedRPM = 175;
     public static volatile double flowerShootSpeedRPM = 60;
     public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(5);
     public static Angle allowedAngle = Units.getDegrees(3);
