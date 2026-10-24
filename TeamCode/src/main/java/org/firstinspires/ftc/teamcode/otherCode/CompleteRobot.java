@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.otherCode;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.telemetry;
-
 import androidx.annotation.NonNull;
 
 import com.pedropathing.follower.Follower;
@@ -12,6 +10,7 @@ import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Pose;
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Drivetrain;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Intake;
@@ -36,12 +35,9 @@ public class CompleteRobot implements NextRobot {
     //Add in all mechanisms that are in robot
     public final Drivetrain drivetrain = new Drivetrain(); //implement other mechanisms the same way
     public static final Shooter shooter = new Shooter();
-    public final Turret turret = new Turret(follower);
+    public final Turret turret = new Turret(this::getFollower);
     public final Lights lights = new Lights();
     public final Intake intake = new Intake();
-
-
-
 
     public void startDrive(Gamepad gamepad){
         DriveCommands.mecanumDrive(
@@ -53,64 +49,94 @@ public class CompleteRobot implements NextRobot {
         ).schedule();
     }   // Creates the Drivetrain and links it to your controls
 
-    public void homeRobot(){
-        follower.setPose(Positions.gardenHoming);
+    /** Reapply configured motor directions after all hardware wrappers are initialized. */
+    public void configureMotorDirections() {
+        drivetrain.frontLeft.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
+        intake.intake.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
+        shooter.shooter.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
+        turret.turret.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
     }
 
+    public Command homeRobot(){
+        return Commands.instant(()->{
+            Follower f = getFollower();
+            if (f != null) {
+                f.setPose(Positions.gardenHoming);
+            }
+        });
+    }
+
+    public Follower getFollower(HardwareMap h) {
+        if (follower == null && h != null) {
+            follower = Constants.create(h);
+            follower.setPose(Positions.gardenHoming);
+        }
+        return follower;
+    }
 
     public Follower getFollower() {
-        if (follower == null) {
-            follower = Constants.create(null); //make it not null later
-        }
-
         return follower;
-    } // Might not work until after pedro auto-tune
-    public void updateFollower(){
-        follower.update();
     }
+
+    public void updateFollower(){
+        if (follower != null) {
+            follower.update();
+        }
+    }
+
     public void init(){ // gets  the robot ready to run
-        lights.lightBrightness('b',0.75); //sets both lights to 75%
-        lights.setLight('b', NextRGBIndicator.Color.WHITE);
-        shooter.closeGate();
+        lights.lightBrightness('b',0.75).schedule(); //sets both lights to 75%
+        lights.setLight('b', NextRGBIndicator.Color.WHITE).schedule();
+        shooter.closeGate().schedule();
     }
 
     public void standardTelemetry(){ //Calling this function adds this data to the telemetry and writes it to the driver station
-        Telemetry.log("Flywheel Ready: ",shooter.shooterInRange());
+        Telemetry.log("Flywheel Ready: ", shooter.shooterInRange());
         Telemetry.log("Turret Ready: ", turret.turretAimed());
-        Telemetry.log("Robot Position", String.valueOf(follower.pose().x()));
+        Follower f = getFollower();
+        if (f != null && f.pose() != null) {
+            Telemetry.log("Robot Position", String.valueOf(f.pose()));
+        }
+        Telemetry.log("Shooter motor RPM (encoder)", shooter.flywheelSpeed());
+        Telemetry.log("Shooter configured RPM (Panels)", MiscVar.shootSpeedRPM);
+        Telemetry.log("Shooter target RPM (motor shaft)", shooter.targetSpeedRpm());
+        Telemetry.log("Shooter PIDF (P/I/D/V/A)", MiscVar.shootkP + "/" + MiscVar.shootkI + "/" + MiscVar.shootkD + "/" + MiscVar.shootkV + "/" + MiscVar.shootkA);
+        Telemetry.log("Shooter motor max RPM (Robot Config)", shooter.motorMaxRpm());
+        Telemetry.log("Shooter encoder ticks/rev (Robot Config)", shooter.motorTicksPerRev());
+        Telemetry.log("Turret Angle", turret.turret.getEncoderPosition().getMagnitude());
         Telemetry.update();
     }
 
     public void shutDown(){
-        shooter.shooterOff();
-        shooter.closeGate();
-        lights.setLight('b', NextRGBIndicator.Color.OFF);
-        //intake off
+        shooter.shooterOff().schedule();
+        shooter.closeGate().schedule();
+        intake.intake(false).schedule();
+        lights.setLight('b', NextRGBIndicator.Color.OFF).schedule();
     }
-
-
 
     public Command flywheelToLight(char index){ //Green if flywheel is close to target, red if it is not
         if (shooter.shooterInRange()){
-            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
-        }else {
-            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
+            return lights.setLight(index, NextRGBIndicator.Color.GREEN);
+        } else {
+            return lights.setLight(index, NextRGBIndicator.Color.RED);
         }
     }
+
     public Command turretToLight(char index){ //Green if turret is close to target, red if not
         if (turret.turretAimed()){
-            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.GREEN));
-        }else {
-            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
+            return lights.setLight(index, NextRGBIndicator.Color.GREEN);
+        } else {
+            return lights.setLight(index, NextRGBIndicator.Color.RED);
         }
     }
+
     public Command fullShooterToLight(char index) { //green if ready to shoot, orange if its missing 1 thing, red if it is not ready at all
         if (turret.turretAimed() && shooter.shooterInRange()) { // both
-            return Commands.instant(() -> lights.setLight(index, NextRGBIndicator.Color.GREEN));
+            return lights.setLight(index, NextRGBIndicator.Color.GREEN);
         } else if (turret.turretAimed() || shooter.shooterInRange()) { // One but not the other
-            return Commands.instant(() -> lights.setLight(index, NextRGBIndicator.Color.ORANGE));
+            return lights.setLight(index, NextRGBIndicator.Color.ORANGE);
         } else { //neither
-            return Commands.instant(()->lights.setLight(index, NextRGBIndicator.Color.RED));
+            return lights.setLight(index, NextRGBIndicator.Color.RED);
         }
     }
 
@@ -121,23 +147,23 @@ public class CompleteRobot implements NextRobot {
                 shooter.openGate(),
                 waitMs(750),
                 shooter.closeGate()
-
         );
     }
+
     public void fullAiming(Pose pose){
-        if (pose.y()>96){
+        if (pose == null) return;
+        if (pose.y() > 96) {
             turret.setGoal(MiscVar.leftGoal); //Aims at driver's left goal if the robot is within the back 2 tiles
-            lights.setLight('r', NextRGBIndicator.Color.VIOLET); // The color can be changed, just picked random ones
-        } else if (pose.y()<48) {
-            turret.setGoal(MiscVar.rightGoal); //Aims at driver's left goal if the robot is within the front 2 tiles
-            lights.setLight('r', NextRGBIndicator.Color.WHITE); // The color can be changed, just picked random ones
-        }
-        {
+            lights.setLight('r', NextRGBIndicator.Color.VIOLET).schedule(); // The color can be changed, just picked random ones
+        } else if (pose.y() < 48) {
+            turret.setGoal(MiscVar.rightGoal); //Aims at driver's right goal if the robot is within the front 2 tiles
+            lights.setLight('r', NextRGBIndicator.Color.WHITE).schedule(); // The color can be changed, just picked random ones
+        } else {
             turret.setGoal(MiscVar.midFieldPose); //Aims at center of the field if in the center 2 tiles, makes the transition smoother between sides
-            lights.setLight('r', NextRGBIndicator.Color.RED); // The color can be changed, just picked random ones
+            lights.setLight('r', NextRGBIndicator.Color.RED).schedule(); // The color can be changed, just picked random ones
         }
-        turret.turretLoop();
     }
+
     public Command shootFlower(){ // tries to shoot into flower
         return sequential(
           turret.AIM(false),
@@ -155,6 +181,6 @@ public class CompleteRobot implements NextRobot {
     @NonNull
     @Override
     public Set<Mechanism> getMechanisms() {
-        return Set.of(drivetrain,shooter,turret,lights,intake);  //add all mechanisms listed above here
+        return Set.of(drivetrain, shooter, turret, lights, intake);  //add all mechanisms listed above here
     }
 }

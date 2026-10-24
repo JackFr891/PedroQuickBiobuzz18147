@@ -8,7 +8,7 @@ import dev.nextftc.robot.Mechanism;
 
 public class Drivetrain implements Mechanism {
     public Drivetrain(){
-//        frontLeft.setDirection(NextMotor.Direction.REVERSE);
+        frontLeft.setDirection(NextMotor.Direction.REVERSE);
 //        backLeft.setDirection(NextMotor.Direction.REVERSE);
 //        frontRight.setDirection(NextMotor.Direction.REVERSE);
 //        backRight.setDirection(NextMotor.Direction.REVERSE);

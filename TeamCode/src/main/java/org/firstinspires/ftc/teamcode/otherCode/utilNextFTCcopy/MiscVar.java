@@ -10,9 +10,10 @@ import dev.nextftc.units.measuretypes.AngularVelocity;
 public class MiscVar {
     //Holds all fixed values that we want to be able to change using panels outside of PedroPathing
 
-    public static AngularVelocity shootSpeed = Units.getRotationsPerMinute(2000);
-    public static AngularVelocity flowerShootSpeed = Units.getRotationsPerMinute(100);
-    public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(100);
+    // Keep tunable RPM values primitive so Panels exposes them as editable numeric fields.
+    public static volatile double shootSpeedRPM = 200;
+    public static volatile double flowerShootSpeedRPM = 60;
+    public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(5);
     public static Angle allowedAngle = Units.getDegrees(3);
     public static Pose rightGoal = new Pose(58,55); //from Driver's view
     public static Pose leftGoal = new Pose(58,86); // ^^^^^
@@ -21,20 +22,23 @@ public class MiscVar {
     public static double TURRET_MAX_DEG = 135;
     public static double constantSOTM = 0.5;
     public static double constantRotComp = 0.4;
-    public static double TURRET_RATIO = 68*4/13; //68/13 is motor gearbox, 4/1 is the actual gears
+    public static final double TURRET_ENCODER_TICKS_PER_MOTOR_REV = 28.0; // REV HD Hex encoder, at the motor
+    public static double TURRET_ULTRAPLANETARY_RATIO = 68.0 / 13.0;
+    public static double TURRET_EXTERNAL_GEAR_RATIO = 4.0;
     public static double turretOffsetX = -3.5;
     public static double turretOffsetY = 0;
-    public static final double gateOpen = 1;
-    public static final double gateClose = 0;
-    public static double shootkP = 0.01;
-    public static double shootkI = 0;
-    public static double shootkD = 0.005;
-    public static double shootkV = 0.01;
-    public static double shootkA = 0.005;
-    public static double turretkP = 0.01;
+    public static double turretMountOffsetDeg = -180.0; // turret's zero-angle axis faces the rear of the robot
+    public static final double gateOpen = 0;
+    public static final double gateClose = 1;
+    public static volatile double shootkP = 0.00075;
+    public static volatile double shootkI = 0;
+    public static volatile double shootkD = 0.00005;
+    public static volatile double shootkV = 0.01;
+    public static volatile double shootkA = 0.005;
+    public static double turretkP = 0.008;
     public static double turretkI = 0;
-    public static double turretkD = 0.005;
-    public static double turretkS = 0.01;
+    public static double turretkD = 0.0005;
+    public static double turretkS = 0.001;
     public static double intakeSpeed = 1;
     public static double outtakeSpeed = -.5;
     public static double flowerArmUp = 1;

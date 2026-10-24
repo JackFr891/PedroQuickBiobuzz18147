@@ -6,7 +6,6 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
-import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
@@ -25,14 +24,12 @@ public class Auto2point5tip extends NextOpMode {
     private final AutoCommands commands;
 
 
-    public Auto2point5tip(CompleteRobot robot, Positions paths, AutoCommands commands) {
+    public Auto2point5tip(CompleteRobot robot) {
         super(robot);
         this.bot = robot;
-        follower = bot.getFollower();
-        this.paths = paths;
-        this.commands = commands;
-
-
+        follower = bot.getFollower(hardwareMap);
+        this.paths = new Positions();
+        this.commands = new AutoCommands(follower, paths, bot);
         Scheduler.reset();
     }   //Tells the code to look at the robot setup in CompleteRobot
 
@@ -42,18 +39,23 @@ public class Auto2point5tip extends NextOpMode {
     }
     @Override
     public void start(){
-        bot.getFollower().setPose(Positions.rightStart);
+        if (bot.getFollower() != null) {
+            bot.getFollower().setPose(Positions.rightStart);
+        }
         bot.turret.setGoal(MiscVar.rightGoal);
         schedule(completeAuto()); //tells robot to run program underneath
     }
 
     @Override
     public void periodic(){
-        bot.getFollower().update();
+        if (bot.getFollower() != null) {
+            bot.getFollower().update();
+            Pose pose = bot.getFollower().pose();
+            if (pose != null) {
+                bot.fullAiming(pose);
+            }
+        }
         Scheduler.execute(); // Code to make the Auto run properly
-        Pose pose = bot.getFollower().pose();
-        bot.fullAiming(pose);
-
     }
     public Command completeAuto(){
         return sequential( //Sequential means it goes in order down the list

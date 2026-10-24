@@ -13,7 +13,11 @@ import dev.nextftc.robot.Mechanism;
 import dev.nextftc.units.Units;
 
 public class Intake implements Mechanism {
+    public Intake() {
+        intake.setDirection(NextMotor.Direction.REVERSE);
+    }
     public final NextMotor intake = new NextMotor(robotMap.intakeMotor);
+
 
     public final NextServo flower = new NextServo(robotMap.flowerMechServo);
     public Command intake(boolean on){
