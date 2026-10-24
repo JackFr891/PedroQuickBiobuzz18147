@@ -11,7 +11,7 @@ public class MiscVar {
     //Holds all fixed values that we want to be able to change using panels outside of PedroPathing
 
     // Keep tunable RPM values primitive so Panels exposes them as editable numeric fields.
-    public static volatile double shootSpeedRPM = 200;
+    public static volatile double shootSpeedRPM = 100;
     public static volatile double flowerShootSpeedRPM = 60;
     public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(5);
     public static Angle allowedAngle = Units.getDegrees(3);
@@ -30,15 +30,15 @@ public class MiscVar {
     public static double turretMountOffsetDeg = -180.0; // turret's zero-angle axis faces the rear of the robot
     public static final double gateOpen = 0;
     public static final double gateClose = 1;
-    public static volatile double shootkP = 0.00075;
+    public static volatile double shootkP = 0.005;
     public static volatile double shootkI = 0;
     public static volatile double shootkD = 0.00005;
-    public static volatile double shootkV = 0.01;
+    public static volatile double shootkV = 0.003875;
     public static volatile double shootkA = 0.005;
-    public static double turretkP = 0.008;
+    public static double turretkP = 0.002;
     public static double turretkI = 0;
     public static double turretkD = 0.0005;
-    public static double turretkS = 0.001;
+    public static double turretkS = 0.0001;
     public static double intakeSpeed = 1;
     public static double outtakeSpeed = -.5;
     public static double flowerArmUp = 1;

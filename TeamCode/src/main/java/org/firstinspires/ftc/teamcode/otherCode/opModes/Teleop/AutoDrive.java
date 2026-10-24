@@ -78,7 +78,6 @@ public class AutoDrive extends NextOpMode {
     }
     @Override
     public void periodic(){ // While the code is running
-        bot.shooter.refreshPanelTuning();
         Follower f = bot.getFollower();
         if (f != null) {
             f.update(); // updates follower, giving us current robot pose

@@ -104,6 +104,8 @@ public class Shooter implements Mechanism {
                 || Double.compare(lastShootKd, MiscVar.shootkD) != 0
                 || Double.compare(lastShootKv, MiscVar.shootkV) != 0
                 || Double.compare(lastShootKa, MiscVar.shootkA) != 0) {
+
+
             shooter.getVelocityConstants()
                     .withP(MiscVar.shootkP)
                     .withI(MiscVar.shootkI)

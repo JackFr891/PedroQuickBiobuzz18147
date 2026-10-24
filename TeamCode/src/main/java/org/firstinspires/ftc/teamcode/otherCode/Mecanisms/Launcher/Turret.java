@@ -69,7 +69,10 @@ public class Turret implements Mechanism {
         } else {
             return Commands.instant(() -> {
                 autoAimEnabled = false;
-                turret.setThrottle(0);
+                desiredAngle = 0;
+                targetTurretAng = 0;
+                turretAngle = Units.getDegrees(0);
+                turret.setPositionSetpoint(turretAngle);
             });
         }
     }

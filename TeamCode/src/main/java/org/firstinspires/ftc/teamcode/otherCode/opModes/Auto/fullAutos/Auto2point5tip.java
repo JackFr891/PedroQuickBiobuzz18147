@@ -28,6 +28,7 @@ public class Auto2point5tip extends NextOpMode {
         super(robot);
         this.bot = robot;
         follower = bot.getFollower(hardwareMap);
+        bot.turret.configureEncoder();
         this.paths = new Positions();
         this.commands = new AutoCommands(follower, paths, bot);
         Scheduler.reset();

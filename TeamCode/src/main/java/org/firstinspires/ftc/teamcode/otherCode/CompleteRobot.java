@@ -145,7 +145,7 @@ public class CompleteRobot implements NextRobot {
                 intake.intake(true),
                 shooter.shooterOn(),
                 shooter.openGate(),
-                waitMs(750),
+                waitMs(1500),
                 shooter.closeGate()
         );
     }
@@ -171,7 +171,7 @@ public class CompleteRobot implements NextRobot {
           waitMs(500),
           intake.intake(true),
           shooter.openGate(),
-          waitMs(750),
+          waitMs(1500),
           shooter.closeGate(),
           turret.AIM(true),
           shooter.shooterOn()
