@@ -20,6 +20,9 @@ public class MiscVar {
     public static Pose rightGoal = new Pose(58,59); //from Driver's view
     public static Pose leftGoal = new Pose(58,82); // ^^^^^
     public static Pose midFieldPose = new Pose(72,72);
+    public static final Pose gardenHoming = new Pose(7,9,90); //Robot with the back in the corner facing along alliance wall
+    public static final Pose leftCorner = new Pose(7,132,270);
+    public static final Pose humanPlayerBox = new Pose(9,111,0);
     public static double TURRET_MIN_DEG = -150;
     public static double TURRET_MAX_DEG = 150;
     public static double constantSOTM = 0.5;

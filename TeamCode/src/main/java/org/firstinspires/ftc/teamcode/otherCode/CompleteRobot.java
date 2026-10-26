@@ -21,7 +21,6 @@ import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.AngleChange;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Shooter;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher.Turret;
 import org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Lights;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MathFunctions;
 import org.firstinspires.ftc.teamcode.pedro.Constants;
@@ -66,11 +65,11 @@ public class CompleteRobot implements NextRobot {
         turret.turret.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
     }
 
-    public Command homeRobot(){
+    public Command homeRobot(Pose pose){
         return Commands.instant(()->{
             Follower f = getFollower();
             if (f != null) {
-                f.setPose(Positions.gardenHoming);
+                f.setPose(pose);
             }
         });
     }
@@ -78,7 +77,7 @@ public class CompleteRobot implements NextRobot {
     public Follower getFollower(HardwareMap h) {
         if (follower == null && h != null) {
             follower = Constants.create(h);
-            follower.setPose(Positions.gardenHoming);
+            follower.setPose(MiscVar.gardenHoming);
         }
         return follower;
     }
@@ -126,7 +125,7 @@ public class CompleteRobot implements NextRobot {
                 waitMs(100),
                 intake.outtake(true), //Makes sure there isn't any pressure on the gate
                 shooter.openGate(),
-                intake.intake(true),
+                intake.intake(true), // leaves intake on after
                 waitMs(MiscVar.shootTimeMs),
                 shooter.closeGate(),
                 hood.hoodDown()

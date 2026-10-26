@@ -5,6 +5,7 @@ import com.pedropathing.ivy.Scheduler;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
+import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 
 import dev.nextftc.robot.opmode.NextOpMode;
 import dev.nextftc.robot.opmode.NextTeleop;
@@ -52,9 +53,12 @@ public class AutoDrive extends NextOpMode {
         gp1.leftTrigger().isOver(.3)
                 .toggleOnTrue(bot.intake.outtake(true))   //make turn intake purge on
                 .toggleOnFalse(bot.intake.outtake(false)); //make turn intake purge off
-        gp1.leftStickButton().and(gp1.rightStickButton())
-                .onTrue(bot.homeRobot())
-        ;
+        gp1.dpadRight()
+                .onTrue(bot.homeRobot(MiscVar.gardenHoming)); //Sets bot position to Garden corner facing along alliance wall
+        gp1.dpadLeft()
+                .onTrue(bot.homeRobot(MiscVar.leftCorner)); //Sets bot position to bottom left corner facing along alliance wall
+        gp1.dpadLeft()
+                .onTrue(bot.homeRobot(MiscVar.humanPlayerBox)); //Sets bot position to left edge on left edge of human player box
 
         //gamepad 2
         gp2.dpadUp()

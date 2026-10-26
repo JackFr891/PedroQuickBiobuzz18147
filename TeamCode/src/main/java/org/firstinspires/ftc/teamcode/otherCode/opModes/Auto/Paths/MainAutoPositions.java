@@ -6,20 +6,18 @@ import com.pedropathing.math.Pose;
 import com.pedropathing.paths.Path;
 import com.pedropathing.paths.interpolator.Interpolator;
 
-public class Positions {
+public class MainAutoPositions {
 
     private static final PoseFactory poseFactory = PoseFactory.degrees();
 
-    public static final Pose gardenHoming = poseFactory.of(7,9,90); //Robot with the back in the corner facing along alliance wall
-
-    public static final Pose rightStart = poseFactory.of(7, 24, 270);
-    private final Pose shootToCornerIntakeStart = poseFactory.of(7, 24, 270);
-    private final Pose shootToCornerIntake = poseFactory.of(7, 10, 270);
+    public static final Pose rightStart = poseFactory.of(38, 7, 90);
+    private final Pose shootToCornerIntakeStart = poseFactory.of(38, 7, 180);
+    private final Pose shootToCornerIntake = poseFactory.of(10, 7, 180);
     private final Pose cornerIntakeshoot1 = poseFactory.of(47, 118, 90);
     private final Pose cornerIntakeshoot1Control1 = poseFactory.of(57, 20, 0);
     private final Pose cornerIntakeshoot1Control2 = poseFactory.of(11, 95, 0);
-    private final Pose cornerIntakeshoot1Segment1Heading = poseFactory.of(47, 118, 270);
-    private final Pose cornerIntakeshoot1Segment2Start = poseFactory.of(47, 118, -90);
+    private final Pose cornerIntakeshoot1Segment1Heading = poseFactory.of(47, 118, 180);
+    private final Pose cornerIntakeshoot1Segment2Start = poseFactory.of(47, 118, 180);
     private final Pose cornerIntakeshoot1Segment2End = poseFactory.of(47, 118, 90);
     private final Pose cornerIntakeshoot1Segment3Heading = poseFactory.of(47, 118, 90);
     private final Pose shoot1LeftFlower = poseFactory.of(47, 128, 90);
@@ -36,7 +34,7 @@ public class Positions {
     private final Pose middleFlowerShoot2Control1 = poseFactory.of(37, 47, 0);
     private final Pose toPark = poseFactory.of(11, 95, 90);
     private final Pose toParkSegment1Start = poseFactory.of(11, 95, 180);
-    private final Pose toParkSegment1End = poseFactory.of(11, 95, 106.1276);
+    private final Pose toParkSegment1End = poseFactory.of(11, 95, 140);
     private final Pose toParkSegment3Start = poseFactory.of(11, 95, 106.1276);
     private final Pose toParkSegment3End = poseFactory.of(11, 95, 90);
 

@@ -10,7 +10,7 @@ import com.pedropathing.ivy.commands.Commands;
 import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
-import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.Positions;
+import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Paths.MainAutoPositions;
 import org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.Commands.AutoCommands;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
 
@@ -21,7 +21,7 @@ import dev.nextftc.robot.opmode.NextOpMode;
 public class Auto2point5tip extends NextOpMode {
     private final CompleteRobot bot;
     private final Follower follower;
-    private final Positions paths;
+    private final MainAutoPositions paths;
     private final AutoCommands commands;
 
 
@@ -30,7 +30,7 @@ public class Auto2point5tip extends NextOpMode {
         this.bot = robot;
         follower = bot.getFollower(hardwareMap);
         bot.turret.configureEncoder();
-        this.paths = new Positions();
+        this.paths = new MainAutoPositions();
         this.commands = new AutoCommands(follower, paths, bot);
         Scheduler.reset();
     }   //Tells the code to look at the robot setup in CompleteRobot
@@ -42,7 +42,7 @@ public class Auto2point5tip extends NextOpMode {
     @Override
     public void start(){
         if (bot.getFollower() != null) {
-            bot.getFollower().setPose(Positions.rightStart);
+            bot.getFollower().setPose(MainAutoPositions.rightStart);
         }
         bot.turret.setGoal(MiscVar.rightGoal);
         schedule(completeAuto()); //tells robot to run program underneath
