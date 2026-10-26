@@ -37,12 +37,15 @@ public class Auto2point5tip extends NextOpMode {
 
     @Override
     public void disabledPeriodic(){
+        telemetry.addData("starting Pose", paths.rightStart); // tells driver where to put bot
+        telemetry.addLine("Starts on right wall facing our alliance with the back of the bot on the second tile line");
+        telemetry.update();
 
     }
     @Override
     public void start(){
         if (bot.getFollower() != null) {
-            bot.getFollower().setPose(MainAutoPositions.rightStart);
+            bot.getFollower().setPose(paths.rightStart);
         }
         bot.turret.setGoal(MiscVar.rightGoal);
         schedule(completeAuto()); //tells robot to run program underneath

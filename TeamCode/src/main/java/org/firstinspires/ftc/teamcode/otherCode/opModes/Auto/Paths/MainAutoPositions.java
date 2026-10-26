@@ -8,9 +8,9 @@ import com.pedropathing.paths.interpolator.Interpolator;
 
 public class MainAutoPositions {
 
-    private static final PoseFactory poseFactory = PoseFactory.degrees();
+    private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    public static final Pose rightStart = poseFactory.of(38, 7, 90);
+    public final Pose rightStart = poseFactory.of(38, 7, 180);
     private final Pose shootToCornerIntakeStart = poseFactory.of(38, 7, 180);
     private final Pose shootToCornerIntake = poseFactory.of(10, 7, 180);
     private final Pose cornerIntakeshoot1 = poseFactory.of(47, 118, 90);
