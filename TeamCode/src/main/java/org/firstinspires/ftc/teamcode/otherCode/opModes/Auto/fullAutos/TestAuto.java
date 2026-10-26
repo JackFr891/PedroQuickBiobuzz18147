@@ -73,6 +73,10 @@ public class TestAuto extends NextOpMode {
     public void periodic() {
         if (follower != null) {
             follower.update();
+            Pose pose = follower.pose();
+            if (pose != null) {
+                bot.updateAim(pose);
+            }
         }
     }
 

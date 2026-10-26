@@ -13,8 +13,10 @@ public class MiscVar {
     // Keep tunable RPM values primitive so Panels exposes them as editable numeric fields.
     public static volatile double shootSpeedRPM = 160;
     public static volatile double flowerShootSpeedRPM = 60;
+    public static double shootTimeMs = 1000;
+    public static double shootSpeedStep = 5;
+
     public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(5);
-    public static Angle allowedAngle = Units.getDegrees(3);
     public static Pose rightGoal = new Pose(58,59); //from Driver's view
     public static Pose leftGoal = new Pose(58,82); // ^^^^^
     public static Pose midFieldPose = new Pose(72,72);
@@ -40,9 +42,11 @@ public class MiscVar {
     public static double turretkD = 0.0005;
     public static double turretkS = 0.001;
     public static double intakeSpeed = 1;
-    public static double outtakeSpeed = -.5;
+    public static double outtakeSpeed = -.75;
     public static double flowerArmUp = 1;
     public static double flowerArmDown = 0;
+    public static double hoodMin = 0.0;
+    public static double hoodMax = 1.0;
 
 
 }

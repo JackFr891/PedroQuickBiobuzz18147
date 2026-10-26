@@ -31,7 +31,7 @@ public class AutoCommands {
 
     public CommandBuilder shootPath(Path path){ //shoots at the start of the move
         if (robot != null) {
-            return parallel(follow(f,path), robot.shoot());
+            return parallel(follow(f,path), robot.shootFull());
         }
         return follow(f, path);
     }

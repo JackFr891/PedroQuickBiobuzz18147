@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.otherCode.Mecanisms.Launcher;
 
-import static com.pedropathing.ivy.commands.Commands.waitMs;
-import static com.pedropathing.ivy.groups.Groups.sequential;
-
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.commands.Commands;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -90,15 +87,29 @@ public class Shooter implements Mechanism {
         targetSpeed = speed;
         shooter.setVelocitySetpoint(speed);
     }
+    public Command adjustShooterSpeed(char direction) {
+        return Commands.instant(() -> {
+            double adjustment;
+            if (direction == 'u') {
+                adjustment = MiscVar.shootSpeedStep;
+            } else if (direction == 'd') {
+                adjustment = -MiscVar.shootSpeedStep;
+            } else {
+                adjustment = 0;
+            }
+            MiscVar.shootSpeedRPM += adjustment;
+            refreshPIDTuning();
+        });
+    }
 
     /** Reapply live Panels values while the selected flywheel preset is active. */
     @Override
     public void periodic() {
-        refreshPanelTuning();
+        refreshPIDTuning();
     }
 
     /** Explicit entry point for OpModes to apply the current Panels values every loop. */
-    public void refreshPanelTuning() {
+    public void refreshPIDTuning() {
         if (Double.compare(lastShootKp, MiscVar.shootkP) != 0
                 || Double.compare(lastShootKi, MiscVar.shootkI) != 0
                 || Double.compare(lastShootKd, MiscVar.shootkD) != 0
@@ -131,7 +142,7 @@ public class Shooter implements Mechanism {
                 setSpeed(Units.getRotationsPerMinute(MiscVar.flowerShootSpeedRPM));
             }
         }
-    }
+    } //Checks if PID values changed
     public boolean shooterInRange(){
         double speedCurrentRpm = shooter.getEncoderVelocity().into(Units.RotationsPerMinute);
         double targetSpeedRpm = targetSpeed.into(Units.RotationsPerMinute);

@@ -74,7 +74,7 @@ public class Auto2point5tip extends NextOpMode {
                 commands.shootPath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
                 commands.shootPath(paths.leftFlowerMiddleFlower()),
                 commands.drivePath(paths.middleFlowerShoot2()),
-                bot.shoot(),
+                bot.shootFull(),
                 bot.intake.intake(false),
                 bot.intake.flowerArmDeploy(false),
                 commands.drivePath(paths.toPark()),

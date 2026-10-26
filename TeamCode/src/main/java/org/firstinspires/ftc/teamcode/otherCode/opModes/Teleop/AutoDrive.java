@@ -34,10 +34,7 @@ public class AutoDrive extends NextOpMode {
     public void start(){ //When code is started
         //Define Controls here
         bot.getFollower(hardwareMap);
-        bot.shooter.configureEncoder(hardwareMap);
-        bot.turret.configureEncoder();
-        bot.configureMotorDirections();
-        bot.init(); // runs init command in the Complete robot class
+        bot.initNormal(); // runs init command in the Complete robot class
         bot.shooter.startFlywheel(); // set the flywheel speed immediately when teleop starts
 
 
@@ -60,15 +57,20 @@ public class AutoDrive extends NextOpMode {
         ;
 
         //gamepad 2
-        gp2.dpadUp().onTrue(bot.turret.AIMcomp(true));// Commands are tied to controllers like this
-        gp2.dpadDown().onTrue(bot.turret.AIMcomp(false)); //turns Shoot on the Move on and off, in case its bugging
+        gp2.dpadUp()
+                        .toggleOnTrue(bot.shooter.adjustShooterSpeed('u'));//bumps up shoot speed
+        gp2.dpadDown()
+                .toggleOnTrue(bot.shooter.adjustShooterSpeed('d'));//bumps down shoot speed
 
 
-        gp2.rightBumper().onTrue(bot.intake.flowerArmDeploy(true)).onFalse(bot.intake.flowerArmDeploy(false)); // make deploy flower descore mech when pressed, pull up when released
+        gp2.rightBumper()
+                .onTrue(bot.intake.flowerArmDeploy(true)).onFalse(bot.intake.flowerArmDeploy(false)); // make deploy flower descore mech when pressed, pull up when released
 
 
-        gp2.y().onTrue(bot.shootFlower()); // when 'y' is pressed, shoot into the flower
-        gp2.a().onTrue(bot.shoot()); // When 'a' is pressed, shoot wherever the turret is currently aimed
+        gp2.a()
+                .onTrue(bot.shootFull()); // When 'a' is pressed, aim and shoot
+        gp2.y()
+                .onTrue(bot.shootSimple()); // when 'y' is pressed, just shoot, don't aim
 
 
 
@@ -86,7 +88,8 @@ public class AutoDrive extends NextOpMode {
                 bot.fullAiming(pose);
             }
         }
-        bot.fullShooterToLight('l').schedule(); //tells the robot to keep light 'l' updated
+
+
         bot.standardTelemetry();
 
 
@@ -94,6 +97,7 @@ public class AutoDrive extends NextOpMode {
     @Override
     public void end(){ // When the stop button is pressed
         bot.shutDown();
+        bot.getFollower().stop();
 
 
     }

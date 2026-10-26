@@ -8,8 +8,10 @@ public class robotMap {
     public static String intakeMotor = "Intake"; //2
     public static String shooterMotor = "Shooter"; //3
     //servos
-    public static String gateServo = "Gate"; //5
     public static String leftLight = "Llight"; //0
+    public static String hoodAngleLeftServo = "hoodLeft"; //1
+    public static String hoodAngleRightServo = "hoodRight"; //2
+    public static String gateServo = "Gate"; //5
     //sensors
     public static String pinPoint = "pinpoint"; // i2c 3
 
