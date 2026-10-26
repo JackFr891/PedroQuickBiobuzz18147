@@ -9,10 +9,11 @@ import com.pedropathing.paths.interpolator.Interpolator;
 public class LeftSmallPositions {
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
-    private final Pose start = poseFactory.of(33, 134, 90);
+    public final Pose start = poseFactory.of(33, 134, 90);
     private final Pose path1 = poseFactory.of(47, 117, 90);
     private final Pose path1Control1 = poseFactory.of(26, 108, 0);
-    private final Pose path1Segment1Target = poseFactory.of(47, 135, 0);
+    private final Pose path1Segment1Heading = poseFactory.of(47, 117, 0);
+    private final Pose path1Segment2Target = poseFactory.of(47, 135, 0);
     private final Pose point2 = poseFactory.of(47, 126, 90);
     private final Pose point3 = poseFactory.of(16, 115, 0);
     private final Pose point3Control1 = poseFactory.of(46, 113, 0);
@@ -21,7 +22,7 @@ public class LeftSmallPositions {
     private final Pose point3Segment3End = poseFactory.of(16, 115, 0);
 
     public Path path1() {
-        return Paths.curve(start, path1Control1, path1).heading(Interpolator.piecewise().until(1, Interpolator.facingPoint(path1Segment1Target)));
+        return Paths.curve(start, path1Control1, path1).heading(Interpolator.piecewise().until(0.0424, Interpolator.constant(path1Segment1Heading)).until(1, Interpolator.facingPoint(path1Segment2Target)));
     }
 
     public Path path2() {

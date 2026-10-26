@@ -43,15 +43,23 @@ public class leftSmallAuto extends NextOpMode {
                 commands.intakePath(paths.path2()),
                 waitMs(500),
                 bot.shootFull(),
-                commands.drivePath(paths.path3()),
+                commands.shootPath(paths.path3()),
                 bot.intake.flowerArmDeploy(false)
         );
     }
 
     @Override
+    public void disabledPeriodic(){
+        telemetry.addData("starting Pose", paths.start); // tells driver where to put bot
+        telemetry.addLine("Starts on left wall facing other alliance with back of bot on first tile line");
+        telemetry.update();
+
+    }
+
+    @Override
     public void start() {
         if (follower != null) {
-            follower.setPose(TestPositions.startPose);
+            follower.setPose(paths.start);
         }
         schedule(autoCommand());
     }
@@ -65,6 +73,7 @@ public class leftSmallAuto extends NextOpMode {
                 bot.updateAim(pose);
             }
         }
+        bot.standardTelemetry();
     }
 
     @Override
