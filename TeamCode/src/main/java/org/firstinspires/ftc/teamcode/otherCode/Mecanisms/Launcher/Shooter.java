@@ -92,9 +92,13 @@ public class Shooter implements Mechanism {
             double adjustment;
             if (direction == 'u') {
                 adjustment = MiscVar.shootSpeedStep;
-            } else if (direction == 'd') {
+            } else if (direction == 'U') { // Capital U does 5 step up
+                adjustment = MiscVar.shootSpeedStep*5;
+            }else if (direction == 'D') { // Capital D does 5 steps down
+                adjustment = -MiscVar.shootSpeedStep*5;
+            }else if (direction == 'd') {
                 adjustment = -MiscVar.shootSpeedStep;
-            } else {
+            }   else {
                 adjustment = 0;
             }
             MiscVar.shootSpeedRPM += adjustment;
