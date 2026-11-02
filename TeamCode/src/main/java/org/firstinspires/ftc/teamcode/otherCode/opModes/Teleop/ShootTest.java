@@ -38,6 +38,9 @@ public class ShootTest extends NextOpMode {
         gp.b().onTrue(Commands.instant(() -> adjustHoodAngle(0.05)));
         gp.y().onTrue(Commands.instant(() -> adjustHoodAngle(0.2)));
         gp.a().onTrue(Commands.instant(() -> adjustHoodAngle(-0.2)));
+
+        gp.rightTrigger().isOver(0.5)
+                .onTrue(bot.intake.intake(true));
     }
     @Override
     public void periodic(){
