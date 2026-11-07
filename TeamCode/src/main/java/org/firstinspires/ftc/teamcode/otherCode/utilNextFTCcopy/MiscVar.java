@@ -11,17 +11,17 @@ public class MiscVar {
     //Holds all fixed values that we want to be able to change using panels outside of PedroPathing
 
     // Keep tunable RPM values primitive so Panels exposes them as editable numeric fields.
-    public static volatile double shootSpeedRPM = 250;
+    public static volatile double shootSpeedRPM = 130;
     public static volatile double flowerShootSpeedRPM = 60;
-    public static double shootTimeMs = 1000;
+    public static double shootTimeMs = 1500;
     public static double shootSpeedStep = 5;
 
     public static AngularVelocity shootThreshhold = Units.getRotationsPerMinute(5);
     public static Pose rightGoal = new Pose(58,59); //from Driver's view
-    public static Pose leftGoal = new Pose(58,82); // ^^^^^
+    public static Pose leftGoal = new Pose(58,80); // ^^^^^
     public static Pose midFieldPose = new Pose(72,72);
-    public static final Pose gardenHoming = new Pose(7,9,90); //Robot with the back in the corner facing along alliance wall
-    public static final Pose leftCorner = new Pose(7,132,270);
+    public static final Pose gardenHoming = new Pose(7,9,Math.toRadians(90)); //Robot with the back in the corner facing along alliance wall
+    public static final Pose leftCorner = new Pose(7,132,Math.toRadians(270));
     public static final Pose humanPlayerBox = new Pose(9,111,0);
     public static double TURRET_MIN_DEG = -150;
     public static double TURRET_MAX_DEG = 150;
@@ -35,10 +35,10 @@ public class MiscVar {
     public static double turretMountOffsetDeg = -180.0; // turret's zero-angle axis faces the rear of the robot
     public static final double gateOpen = 0;
     public static final double gateClose = 1;
-    public static volatile double shootkP = 0.005;
+    public static volatile double shootkP = 0.01;
     public static volatile double shootkI = 0;
     public static volatile double shootkD = 0.00005;
-    public static volatile double shootkV = 0.003875;
+    public static volatile double shootkV = 0.004511;
     public static volatile double shootkA = 0.005;
     public static double turretkP = 0.01;
     public static double turretkI = 0;

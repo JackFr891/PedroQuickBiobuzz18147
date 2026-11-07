@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.otherCode;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import androidx.annotation.NonNull;
 
 import com.pedropathing.follower.Follower;
@@ -27,6 +25,7 @@ import org.firstinspires.ftc.teamcode.pedro.Constants;
 
 import java.util.Set;
 
+import dev.nextftc.hardware.actuators.NextMotor;
 import dev.nextftc.hardware.actuators.NextRGBIndicator;
 import dev.nextftc.robot.Mechanism;
 import dev.nextftc.robot.NextRobot;
@@ -63,6 +62,7 @@ public class CompleteRobot implements NextRobot {
         intake.intake.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
         shooter.shooter.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
         turret.turret.setDirection(dev.nextftc.hardware.actuators.NextMotor.Direction.REVERSE);
+        hood.leftHood.setDirection(NextMotor.Direction.REVERSE);
     }
 
     public Command homeRobot(Pose pose){
@@ -92,7 +92,7 @@ public class CompleteRobot implements NextRobot {
         }
     }
 
-    public void initNormal(){ // gets  the robot ready to run
+    public void initNormal(HardwareMap hardwareMap){ // gets the robot ready to run
         lights.lightBrightness('b',0.75).schedule(); //sets both lights to 75%
         lights.setLight('b', NextRGBIndicator.Color.WHITE).schedule();
         shooter.closeGate().schedule();
@@ -114,6 +114,10 @@ public class CompleteRobot implements NextRobot {
     public Command shootFull(){ // shoots and aims and does hood angle
         return sequential(
                 turret.AIM(true),
+                Commands.instant(() -> {
+                    Follower currentFollower = getFollower();
+                    fullAiming(currentFollower.pose());
+                }),
                 shootSimple(),
                 turret.AIM(false)
         );
@@ -122,13 +126,14 @@ public class CompleteRobot implements NextRobot {
         return sequential(
                 hood.hoodUpDistance(),
                 shooter.shooterOn(),
-                waitMs(100),
+                waitMs(500),
                 intake.outtake(true), //Makes sure there isn't any pressure on the gate
                 shooter.openGate(),
                 intake.intake(true), // leaves intake on after
                 waitMs(MiscVar.shootTimeMs),
                 shooter.closeGate(),
-                hood.hoodDown()
+                hood.hoodDown(),
+                shooter.shooterOff()
         );
 
     }
@@ -188,6 +193,20 @@ public class CompleteRobot implements NextRobot {
         turret.commandAngle(motorAngle);
     }
 
+    /** Refresh range from the follower pose and currently selected turret goal every loop. */
+    public void updateTargetDistance() {
+        Follower currentFollower = getFollower();
+        Pose pose = currentFollower == null ? null : currentFollower.pose();
+        Pose goal = turret.activeGoal;
+        if (pose == null || goal == null) return;
+
+        double turretX = pose.x() + MiscVar.turretOffsetX * Math.cos(pose.heading())
+                - MiscVar.turretOffsetY * Math.sin(pose.heading());
+        double turretY = pose.y() + MiscVar.turretOffsetX * Math.sin(pose.heading())
+                + MiscVar.turretOffsetY * Math.cos(pose.heading());
+        calculateTargetDistance(goal.x(), goal.y(), turretX, turretY);
+    }
+
     /** Set light 'l' green when the calculated angle is within the turret's configured travel. */
     public void updateTurretLimitLight(char light) {
         lights.setLight(light, turretCanReachCalculatedAngle
@@ -214,6 +233,7 @@ public class CompleteRobot implements NextRobot {
         return Set.of(drivetrain, shooter, turret, hood, lights, intake);  //add all mechanisms listed above here
     }
     public void standardTelemetry(){ //Calling this function adds this data to the telemetry and writes it to the driver station
+        updateTargetDistance();
         Telemetry.log("Flywheel Ready: ", shooter.shooterInRange());
         Follower f = getFollower();
         if (f != null && f.pose() != null) {
@@ -227,6 +247,7 @@ public class CompleteRobot implements NextRobot {
         Telemetry.log("Shooter motor max RPM (Robot Config)", shooter.motorMaxRpm());
         Telemetry.log("Shooter encoder ticks/rev (Robot Config)", shooter.motorTicksPerRev());
         Telemetry.log("Turret Angle", turret.turret.getEncoderPosition().getMagnitude());
+        Telemetry.log("Hood Value", hood.leftHood.getPosition());
         Telemetry.update();
     }
 }

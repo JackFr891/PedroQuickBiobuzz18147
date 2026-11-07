@@ -3,8 +3,6 @@ package org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.fullAutos;
 import static com.pedropathing.ivy.Scheduler.schedule;
 import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
-import static org.firstinspires.ftc.robotcore.external.BlocksOpModeCompanion.hardwareMap;
-
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Command;
 import com.pedropathing.ivy.Scheduler;
@@ -38,12 +36,13 @@ public class leftSmallAuto extends NextOpMode {
     public Command autoCommand(){
         return sequential(
                 waitMs(20000), //wait 20 seconds to let teammate shoot
-                commands.shootPath(paths.path1()),
+                bot.shootFull(),
+                commands.drivePath(paths.leftStartToFirstShoot()),
                 bot.intake.flowerArmDeploy(true),
-                commands.intakePath(paths.path2()),
+                commands.intakePath(paths.shoot1LeftFlower()),
                 waitMs(500),
                 bot.shootFull(),
-                commands.shootPath(paths.path3()),
+                commands.drivePath(paths.leftFlowerToPark()),
                 bot.intake.flowerArmDeploy(false)
         );
     }
@@ -58,6 +57,7 @@ public class leftSmallAuto extends NextOpMode {
 
     @Override
     public void start() {
+        bot.initNormal(hardwareMap);
         if (follower != null) {
             follower.setPose(paths.start);
         }

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.otherCode.opModes.Auto.fullAutos;
 
 import static com.pedropathing.ivy.Scheduler.schedule;
+import static com.pedropathing.ivy.commands.Commands.waitMs;
 import static com.pedropathing.ivy.groups.Groups.sequential;
 
 import com.pedropathing.follower.Follower;
@@ -44,6 +45,7 @@ public class Auto2point5tip extends NextOpMode {
     }
     @Override
     public void start(){
+        bot.initNormal(hardwareMap);
         if (bot.getFollower() != null) {
             bot.getFollower().setPose(paths.rightStart);
         }
@@ -68,14 +70,25 @@ public class Auto2point5tip extends NextOpMode {
         if (follower != null) {
             follower.stop();
         }
+        Commands.instant(()->bot.hood.hoodAngle = 0.44);
     }
 
     public Command completeAuto(){
         return sequential( //Sequential means it goes in order down the list
-                commands.shootPath(paths.preloadShootToFirstShoot()), //tells it to run this path first and shoot, goes all the way to being ready 4 2nd shoot
+                bot.shootFull(),
+                commands.drivePath(paths.startToIntake(),0.3),
+                waitMs(200),
+                commands.drivePath(paths.intakeToFirstShoot()), //tells it to run this path first and shoot, goes all the way to being ready 4 2nd shoot
                 bot.intake.flowerArmDeploy(true),
-                commands.shootPath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
-                commands.shootPath(paths.leftFlowerMiddleFlower()),
+                Commands.instant(()->bot.hood.hoodAngle = 0.36),
+                bot.shootFull(),
+                commands.drivePath(paths.shoot1LeftFlower()), //once the first path is done, this one runs after
+                waitMs(300),
+                Commands.instant(()->bot.hood.hoodAngle = 0.40),
+                bot.shootFull(),
+                Commands.instant(()->bot.hood.hoodAngle = 0.44),
+                commands.drivePath(paths.leftFlowerMiddleFlower()),
+                waitMs(400),
                 commands.drivePath(paths.middleFlowerShoot2()),
                 bot.shootFull(),
                 bot.intake.intake(false),

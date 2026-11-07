@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.otherCode.opModes.Teleop;
 
 import com.pedropathing.follower.Follower;
 import com.pedropathing.ivy.Scheduler;
-import com.pedropathing.math.Pose;
 
 import org.firstinspires.ftc.teamcode.otherCode.CompleteRobot;
 import org.firstinspires.ftc.teamcode.otherCode.utilNextFTCcopy.MiscVar;
@@ -35,7 +34,7 @@ public class AutoDrive extends NextOpMode {
     public void start(){ //When code is started
         //Define Controls here
         bot.getFollower(hardwareMap);
-        bot.initNormal(); // runs init command in the Complete robot class
+        bot.initNormal(hardwareMap); // runs init command in the Complete robot class
         bot.shooter.startFlywheel(); // set the flywheel speed immediately when teleop starts
 
 
@@ -59,6 +58,10 @@ public class AutoDrive extends NextOpMode {
                 .onTrue(bot.homeRobot(MiscVar.leftCorner)); //Sets bot position to bottom left corner facing along alliance wall
         gp1.dpadLeft()
                 .onTrue(bot.homeRobot(MiscVar.humanPlayerBox)); //Sets bot position to left edge on left edge of human player box
+        gp1.a()
+                        .onTrue(bot.shootFull());
+        gp1.y()
+                        .onTrue(bot.shootSimple());
 
         //gamepad 2
         gp2.dpadUp()
@@ -87,13 +90,9 @@ public class AutoDrive extends NextOpMode {
         Follower f = bot.getFollower();
         if (f != null) {
             f.update(); // updates follower, giving us current robot pose
-            Pose pose = f.pose();
-            if (pose != null) {
-                bot.fullAiming(pose);
-            }
         }
-
-
+        // Calculate range from this loop's updated follower pose before telemetry is sent.
+        bot.updateTargetDistance();
         bot.standardTelemetry();
 
 

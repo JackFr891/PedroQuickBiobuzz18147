@@ -14,9 +14,10 @@ import dev.nextftc.robot.Mechanism;
 public class AngleChange implements Mechanism {
     public final NextServo leftHood = new NextServo(robotMap.hoodAngleLeftServo);
     public final NextServo rightHood = new NextServo(robotMap.hoodAngleRightServo);
-    public double hoodAngle = 0.0;
+    public double hoodAngle = 0.44;
+
     public AngleChange(){
-        rightHood.setDirection(NextMotor.Direction.REVERSE); // right side servo is the opposite way, so it needs to be reversed
+        leftHood.setDirection(NextMotor.Direction.REVERSE); // right side servo is the opposite way, so it needs to be reversed
     }
     @Override
     public void periodic(){

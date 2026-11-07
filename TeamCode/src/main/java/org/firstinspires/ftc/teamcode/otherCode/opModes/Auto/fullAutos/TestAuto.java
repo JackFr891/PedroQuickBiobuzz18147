@@ -58,6 +58,7 @@ public class TestAuto extends NextOpMode {
     //
     @Override
     public void start() {
+        bot.initNormal(hardwareMap);
         if (follower != null) {
             follower.setPose(TestPositions.startPose);
         }
